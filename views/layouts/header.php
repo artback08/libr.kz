@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
-    <head><script src="http://<?php echo SITE; ?>/public/dist/js/color-modes.js"></script>
+    <head><script src="<?php echo URL; ?>/dist/js/color-modes.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -9,8 +9,8 @@
     <title></title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="http://<?php echo SITE; ?>/public/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://<?php echo SITE; ?>/public/style.css" rel="stylesheet">
+    <link href="<?php echo URL; ?>/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo URL; ?>/dist/css/style.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -93,7 +93,7 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="http://<?php echo SITE; ?>/public/dist/css/headers.css" rel="stylesheet">
+    <link href="<?php echo URL; ?>/dist/css/headers.css" rel="stylesheet">
     <link href="public/dist/css/carousel.css" rel="stylesheet">
   </head>
   <body>
@@ -180,7 +180,7 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
           <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
-          <img class="logo" src="http://<?php echo SITE; ?>/public/img/logo2.png" alt="libr.kz">
+          <img class="logo" src="<?php echo URL; ?>/img/logo2.png" alt="libr.kz">
           libr.kz
         </a>
 
@@ -196,7 +196,7 @@
         </form>
 
         <div class="text-end">
-          <a href="http://<?php echo SITE; ?>/login"><button type="button" class="btn btn-outline-light me-2">Войти</button></a>
+          <a href="<?php echo URL; ?>/login"><button type="button" class="btn btn-outline-light me-2">Войти</button></a>
           <button type="button" class="btn btn-warning">Регистрация</button>
         </div>
       </div>

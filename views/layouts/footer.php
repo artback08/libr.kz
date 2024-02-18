@@ -12,7 +12,7 @@
   </div>
   
 </main>
-<script src="http://<?php echo SITE; ?>/public/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo URL; ?>/dist/js/bootstrap.bundle.min.js"></script>
 
     </body>
 </html>
