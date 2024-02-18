@@ -13,6 +13,5 @@
   
 </main>
 <script src="<?php echo URL; ?>/dist/js/bootstrap.bundle.min.js"></script>
-
-    </body>
+</body>
 </html>
