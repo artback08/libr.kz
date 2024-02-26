@@ -9,7 +9,7 @@
     </nav>
 
     <div class="row">
-    <div class="col-md-12 col-lg-6 offset-3">
+    <div class="col-md-12 col-lg-6 lg-offset-3">
         <h4 class="mb-3">Запись о писателе</h4>
         <form action="http://<?php echo SITE; ?>/writers/store" method="POST"  class="needs-validation" novalidate="" enctype="multipart/form-data">
             <div class="row g-3">
@@ -36,16 +36,16 @@
             <h4 class="mb-3">Статус публикации</h4>
             <div class="my-3">
                 <div class="form-check">
-                    <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
-                    <label class="form-check-label" for="credit">Опубликована</label>
+                    <input name="is_published" value="1" type="radio" class="form-check-input" checked="">
+                    <label class="form-check-label">Опубликована</label>
                 </div>
                 <div class="form-check">
-                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required="">
-                    <label class="form-check-label" for="debit">Черновик</label>
+                    <input name="is_published" value="0" type="radio" class="form-check-input">
+                    <label class="form-check-label" >Черновик</label>
                 </div>
             </div>
             <hr class="my-4">
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить запись</button>
+            <button name="submit" type="submit" class="w-100 btn btn-primary btn-lg">Добавить запись</button>
         </form>
       </div>
     </div>

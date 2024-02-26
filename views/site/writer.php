@@ -4,8 +4,10 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
         <li class="breadcrumb-item"><a href="/">Library</a></li>
-        <li class="breadcrumb-item"><a href="http://<?php echo SITE; ?>/writers">Писатели</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo URL ?>/writers">Писатели</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?php echo $writer['name']; ?></li>
+        <li class="breadcrumb-item"><a href="<?php echo URL ?>/writers/edit/<?php echo $writer['id'] ?>"><span class="badge text-bg-info rounded-pill">Редактировать</span></a></li>
+        <li class="breadcrumb-item"><a href="<?php echo URL ?>/writers/destroy/<?php echo $writer['id'] ?>"><span class="badge text-bg-danger rounded-pill">Удалить</span></a></li>
       </ol>
     </nav>
     <div class="row">

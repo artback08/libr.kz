@@ -14,7 +14,7 @@ class WriterController
     // READ ONE 
     public function actionView($id)
     {
-        $writer = Writer::getById($id);    
+        $writer = Writer::getById($id);   
         require_once(ROOT . '/views/site/writer.php');
         return true;
     }
@@ -24,20 +24,43 @@ class WriterController
         require_once(ROOT . '/views/admin/writer_add.php');
         return true;
     }
-    // ACTION STORE WRITER
+    // STORE WRITER
     public function actionStore()
     {
-
         if(Writer::store(Upload::upload('writers'))){
-
-            header("Location: http://" . SITE . "/writers/add");
-            return true;
+            redirect("writers");
         }
-        
-        
+        else{
+            redirect("writers/add");
+        }
+    }
+    // EDIT WRITER
+    public function actionEdit($id)
+    { 
+        $writer = Writer::getById($id);
+        require_once(ROOT . '/views/admin/writer_edit.php');
+        return true;
+    }
 
-        // $writer = Writer::getById($id);    
+    public function actionUpdate($id)
+    {
+        $writer = Writer::getById($id);
+        $photo = $writer['photo'];
         
+        if(Writer::update($id)){
+            redirect("writers");            
+        }
+        else{
+            redirect("writers/edit/{$id}");
+        }
+    }
+
+    public function actionDestroy($id)
+    {
+        $writer = Writer::getById($id);
+        Writer::deleteByid($id);
+        unlink(ROOT . '/public/uploads/img/writers/'.$writer['photo']);
+        redirect("writers");
     }
 
 }

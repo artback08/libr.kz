@@ -14,6 +14,7 @@ define('SITE', 'libr.local');
 define('URL', 'http://'.SITE);
 require_once(ROOT.'/components/Autoload.php');
 require_once(ROOT.'/components/Router.php');
+require_once(ROOT.'/components/Functions.php');
 
 // Вызов Router
 $router = new Router();

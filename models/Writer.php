@@ -1,17 +1,11 @@
 <?php
-require_once ROOT.'/components/DB.php';
+require_once ROOT.'/components/Db.php';
 require_once ROOT.'/components/Upload.php';
 
 // namespace Libr\Model;
 
 class Writer
 {
-    // protected $oDb;
-    // public function __construct()
-    // {
-    //     $dbFile = ROOT . 'components/DB.ph';
-    //     $this->oDb = new $dbFile;
-    // }
 
     // READ ALL
     public static function getAll()
@@ -20,7 +14,7 @@ class Writer
         $db = Db::getConnection();
 
         // Запрос к БД
-        $result = $db->query('SELECT id, name, biography, years, photo, created_date FROM writers ORDER BY id');
+        $result = $db->query('SELECT id, name, biography, years, photo, created_at FROM writers ORDER BY id');
 
         // Получение и возврат результатов
         $i = 0;
@@ -31,7 +25,7 @@ class Writer
             $writersList[$i]['biography'] = $row['biography'];
             $writersList[$i]['photo'] = $row['photo'];
             $writersList[$i]['years'] = $row['years'];
-            $writersList[$i]['created_date'] = $row['created_date'];
+            $writersList[$i]['created_at'] = $row['created_at'];
             $i++;
         }
         return $writersList;
@@ -51,28 +45,102 @@ class Writer
     // CREATE
     public static function store($file)
     {
+        $name = '';
+        $biography = '';
+        $years = '';
+        $photo = '';
+        $is_published = '';
+
+        $name = $_POST['name'];
+        $biography = $_POST['biography'];
+        $years = $_POST['years'];
+        $is_published = $_POST['is_published'];
+
+        // сгенерированное название изображения
         $photo = $file;
-        // var_dump($photo = Upload::fileUpload());
-        // print_r($photo);
        
         $db = Db::getConnection();
         $sql = 'INSERT INTO writers '
-                . '(name, biography, years, photo)'
+                . '(name, biography, years, photo, is_published)'
                 . 'VALUES '
-                . '(:name, :biography, :years, :photo)';
+                . '(:name, :biography, :years, :photo, :is_published)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
         $result->bindParam(':biography', $_POST['biography'], PDO::PARAM_STR);
         $result->bindParam(':photo', $photo, PDO::PARAM_STR);
         $result->bindParam(':years', $_POST['years'], PDO::PARAM_INT);
-        // $result->bindParam(':created_date', $options['created_date'], PDO::PARAM_INT);
+        $result->bindParam(':is_published', $_POST['is_published'], PDO::PARAM_INT);
+        
         if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
             return $db->lastInsertId();
         }
-        // Иначе возвращаем 0
         return 0;
+    }
+
+    // UPDATE
+    public static function update($id)
+    {
+        $name = '';
+        $biography = '';
+        $years = '';
+        $photo = '';
+        $is_published = '';
+
+        $writer = Writer::getById($id);
+        
+        // изображение из БД
+        $photo = $writer['photo'];
+
+        if(isset($_POST['update'])){
+            $name = $_POST['name'];
+            $biography = $_POST['biography'];
+            $years = $_POST['years'];
+            $is_published = $_POST['is_published'];
+
+            $updated_at = date('Y-m-d H:i:s');
+
+            if($newPhoto = Upload::upload('writers')){
+                Upload::delete('writers', $photo);
+                // название нового сохраненного изображения
+                $photo = $newPhoto;
+            };
+            
+            $db = Db::getConnection();
+            $sql = 'UPDATE writers SET
+                    name = :name,
+                    biography = :biography,
+                    years = :years,
+                    photo = :photo,
+                    is_published = :is_published,
+                    updated_at = :updated_at
+                    WHERE id = :id';
+
+            $result = $db->prepare($sql);
+            $result->bindParam(':name', $name, PDO::PARAM_STR);
+            $result->bindParam(':biography', $biography, PDO::PARAM_STR);
+            $result->bindParam(':photo', $photo, PDO::PARAM_STR);
+            $result->bindParam(':years', $years, PDO::PARAM_INT);
+            $result->bindParam(':updated_at', $updated_at, PDO::PARAM_STR);
+            $result->bindParam(':is_published', $is_published, PDO::PARAM_INT);
+            $result->bindParam(':id', $id, PDO::PARAM_INT);
+            if ($result->execute()) {
+                return $db->lastInsertId();
+            }
+        }
+        return false;
+    }
+
+    // DELETE
+    public static function deleteByid($id)
+    {
+        $db = Db::getConnection();
+        $sql = 'DELETE FROM writers WHERE id = :id';
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        return $result->execute();
     }
 
 }

@@ -4,8 +4,10 @@
 
         public static function upload($dir)
         {
-            if ($_FILES['photo'] !== null && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){
-             
+            $image = '';
+
+            if (isset($_FILES['photo']) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK){
+
                 $image = $_FILES['photo'];
 
                 // VALIDATION
@@ -30,14 +32,20 @@
                 $extension = pathinfo($image["name"], PATHINFO_EXTENSION);
                 // формируем уникальное имя с помощью функции time()
                 $fileName = time() . ".$extension";
-
-                // загружаем файл и проверяем
-                // если во премя загрузки файла произошла ошибка, возвращаем die()
-                if (!move_uploaded_file($image["tmp_name"], ROOT 
-                . '/public/uploads/img/' . $dir . '/' . $fileName)) {
-                    die('Error upload file');
-                }
+                
+                // загружаем файл
+                move_uploaded_file($image["tmp_name"], ROOT.'/public/uploads/img/'.$dir.'/'.$fileName);
+                // die('Error upload file');
                 return $fileName;
+            }
+        }
+        
+        public static function delete($dir, $fileName)
+        {
+            if(isset ($_POST['update'])){
+                if(Upload::upload($dir)){
+                    unlink(ROOT . '/public/uploads/img/' . $dir . '/' . $fileName);
+                }
             }
         }
 }

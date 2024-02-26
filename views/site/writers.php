@@ -1,10 +1,12 @@
 <?php require_once ROOT . '/views/layouts/header.php'; ?>
+<!-- <?php require_once ROOT . '/views/layouts/sidebar.php'; ?> -->
 
     <div class="container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-        <li class="breadcrumb-item"><a href="/">Library</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Писатели</li>
+        <li class="breadcrumb-item"><a href="<?php echo URL ?>">Library</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo URL ?>/writers">Писатели</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="<?php echo URL ?>/writers/add"><span class="badge text-bg-warning rounded-pill">Добавить</span></a></li>
       </ol>
     </nav>
     <div class="row">

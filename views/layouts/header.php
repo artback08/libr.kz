@@ -195,7 +195,7 @@
 
         <div class="text-end">
           <a href="<?php echo URL; ?>/login"><button type="button" class="btn btn-outline-light me-2">Войти</button></a>
-          <button type="button" class="btn btn-warning">Регистрация</button>
+          <!-- <button type="button" class="btn btn-warning">Регистрация</button> -->
         </div>
       </div>
     </div>
