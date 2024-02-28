@@ -4,16 +4,7 @@ require_once ROOT .'/components/Db.php';
 
 class User
 {
-    public static function findByName($name)
-    {
-        // Соединение с БД
-        $db = Db::getConnection();
-        $result = $db->query('SELECT * FROM users WHERE name = '.$name);
-        $result = $result->fetch();
-        dd($result);
-
-        return $result;
-    }
+    
     // поиск по email 
     public static function findByEmail($email)
     {
@@ -30,17 +21,15 @@ class User
         return $user;
     }
 
-    // попытка входа
+    // ПОПЫТКА ВХОДА
     public static function attemptLogin($email, $password) {
         $user = User::findByEmail($email);
         
         if($user) {
-            // Found Admin, now check password
-            if (User::passwordCheck($password, $user['password'])) {
-                // password matches
+            // ПОСЛЕ НАХОЖДЕНИЯ ПОЛЬЗОВАТЕЛЯ ПО 'email' ПРОВЕРЯЕМ ПАРОЛЬ
+            if (User::passwordCheck($password, $user['password'])) {               
                 return $user;
-            } else {
-                // password doea not match
+            } else {               
                 return false;
             }
         } else {

@@ -15,12 +15,9 @@ class UserController
 
         if (isset($_POST['login'])) 
         {
-
             $password = $_POST["password"];
             $email = $_POST["email"];
-
             if(User::findByEmail($email)){
-
                 $user = User::attemptLogin($email, $password);
                 if ($user) {
                     // Success
@@ -39,9 +36,7 @@ class UserController
             else{
                 $_SESSION["message"] = "Username/password not found.";
             }
-                
         }
-
         require_once (ROOT . '/views/login.php');
         return true;
     } 
