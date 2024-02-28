@@ -1,1 +1,6 @@
 /public/uploads
+/components/AdminBase.php
+/components/Pagination.php
+/models/Auth.php
+/models/Product.php
+
