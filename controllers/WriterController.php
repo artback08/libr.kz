@@ -1,5 +1,6 @@
 <?php
 
+require_once ROOT.'/models/User.php';
 require_once ROOT.'/models/Writer.php';
 
 class WriterController
@@ -8,20 +9,20 @@ class WriterController
     public function actionIndex()
     {
         $writers = Writer::getAll();  
-        require_once(ROOT . '/views/site/writers.php');
+        require_once(ROOT . '/views/writers/writers.php');
         return true;
     }
     // READ ONE 
     public function actionView($id)
     {
         $writer = Writer::getById($id);   
-        require_once(ROOT . '/views/site/writer.php');
+        require_once(ROOT . '/views/writers/writer.php');
         return true;
     }
     // FORM FOR ADD WRITER
     public function actionAdd()
     {  
-        require_once(ROOT . '/views/admin/writer_add.php');
+        require_once(ROOT . '/views/writers/writer_add.php');
         return true;
     }
     // STORE WRITER
@@ -38,7 +39,7 @@ class WriterController
     public function actionEdit($id)
     { 
         $writer = Writer::getById($id);
-        require_once(ROOT . '/views/admin/writer_edit.php');
+        require_once(ROOT . '/views/writers/writer_edit.php');
         return true;
     }
 

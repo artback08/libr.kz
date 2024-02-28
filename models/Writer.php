@@ -2,8 +2,6 @@
 require_once ROOT.'/components/Db.php';
 require_once ROOT.'/components/Upload.php';
 
-// namespace Libr\Model;
-
 class Writer
 {
 
@@ -56,9 +54,10 @@ class Writer
         $years = $_POST['years'];
         $is_published = $_POST['is_published'];
 
-        // сгенерированное название изображения
-        $photo = $file;
-       
+        // ЕСЛИ ИЗОБРАЖЕНИЕ НЕ ДОБАВЛЕНО В ФОРМУ, ТО БУДЕТ ОТОБРАЖАТЬСЯ 'writer.jpg'
+        $photo = $file !== null ? $file : "writer.jpg";
+        
+        
         $db = Db::getConnection();
         $sql = 'INSERT INTO writers '
                 . '(name, biography, years, photo, is_published)'
@@ -101,6 +100,7 @@ class Writer
             $updated_at = date('Y-m-d H:i:s');
 
             if($newPhoto = Upload::upload('writers')){
+                // удаление старого изображения с диска
                 Upload::delete('writers', $photo);
                 // название нового сохраненного изображения
                 $photo = $newPhoto;

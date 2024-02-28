@@ -1,224 +1,103 @@
 <?php
 
-/**
- * Класс User - модель для работы с пользователями
- */
+require_once ROOT .'/components/Db.php';
+
 class User
 {
-
-    /**
-     * Регистрация пользователя 
-     * @param string $name <p>Имя</p>
-     * @param string $email <p>E-mail</p>
-     * @param string $password <p>Пароль</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function register($name, $email, $password)
+    public static function findByName($name)
     {
         // Соединение с БД
         $db = Db::getConnection();
+        $result = $db->query('SELECT * FROM users WHERE name = '.$name);
+        $result = $result->fetch();
+        dd($result);
 
-        // Текст запроса к БД
-        $sql = 'INSERT INTO user (name, email, password) '
-                . 'VALUES (:name, :email, :password)';
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':email', $email, PDO::PARAM_STR);
-        $result->bindParam(':password', $password, PDO::PARAM_STR);
-        return $result->execute();
+        return $result;
     }
-
-    /**
-     * Редактирование данных пользователя
-     * @param integer $id <p>id пользователя</p>
-     * @param string $name <p>Имя</p>
-     * @param string $password <p>Пароль</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function edit($id, $name, $password)
+    // поиск по email 
+    public static function findByEmail($email)
     {
         // Соединение с БД
         $db = Db::getConnection();
+        // $email = '\''.$email.'\'';
 
-        // Текст запроса к БД
-        $sql = "UPDATE user 
-            SET name = :name, password = :password 
-            WHERE id = :id";
+        $stmt = $db->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        // Fetch the records so we can display them in our template.
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':password', $password, PDO::PARAM_STR);
-        return $result->execute();
+        return $user;
     }
 
-    /**
-     * Проверяем существует ли пользователь с заданными $email и $password
-     * @param string $email <p>E-mail</p>
-     * @param string $password <p>Пароль</p>
-     * @return mixed : integer user id or false
-     */
-    public static function checkUserData($email, $password)
-    {
-        // Соединение с БД
-        $db = Db::getConnection();
-
-        // Текст запроса к БД
-        $sql = 'SELECT * FROM user WHERE email = :email AND password = :password';
-
-        // Получение результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':email', $email, PDO::PARAM_INT);
-        $result->bindParam(':password', $password, PDO::PARAM_INT);
-        $result->execute();
-
-        // Обращаемся к записи
-        $user = $result->fetch();
-
-        if ($user) {
-            // Если запись существует, возвращаем id пользователя
-            return $user['id'];
-        }
-        return false;
-    }
-
-    /**
-     * Запоминаем пользователя
-     * @param integer $userId <p>id пользователя</p>
-     */
-    public static function auth($userId)
-    {
-        // Записываем идентификатор пользователя в сессию
-        $_SESSION['user'] = $userId;
-    }
-
-    /**
-     * Возвращает идентификатор пользователя, если он авторизирован.<br/>
-     * Иначе перенаправляет на страницу входа
-     * @return string <p>Идентификатор пользователя</p>
-     */
-    public static function checkLogged()
-    {
-        // Если сессия есть, вернем идентификатор пользователя
-        if (isset($_SESSION['user'])) {
-            return $_SESSION['user'];
-        }
-
-        header("Location: /user/login");
-    }
-
-    /**
-     * Проверяет является ли пользователь гостем
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function isGuest()
-    {
-        if (isset($_SESSION['user'])) {
+    // попытка входа
+    public static function attemptLogin($email, $password) {
+        $user = User::findByEmail($email);
+        
+        if($user) {
+            // Found Admin, now check password
+            if (User::passwordCheck($password, $user['password'])) {
+                // password matches
+                return $user;
+            } else {
+                // password doea not match
+                return false;
+            }
+        } else {
             return false;
         }
-        return true;
     }
-
-    /**
-     * Проверяет имя: не меньше, чем 2 символа
-     * @param string $name <p>Имя</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function checkName($name)
-    {
-        if (strlen($name) >= 2) {
-            return true;
+    
+    // проверка, выполнен ли вход
+    public static function loggedIn() {
+        return isset($_SESSION['user_id']);
+    }
+    
+    // перенаправление с закрытой страницы
+    public static function confirmLoggedIn() {
+        if(!loggedIn()) {
+            redirect("login.php");
         }
-        return false;
     }
 
-    /**
-     * Проверяет телефон: не меньше, чем 10 символов
-     * @param string $phone <p>Телефон</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function checkPhone($phone)
-    {
-        if (strlen($phone) >= 10) {
-            return true;
-        }
-        return false;
-    }
+    // шифрование пароля
+    public static function passwordEncrypt($password) {
+		$hash_format = "$2y$10$";	// Tells PHP to use Blowfish with a "cost" of 10
+		$salt_length = 22;			// Blowfish salts should be 22-characters or more
+		$salt = User::generateSalt($salt_length);
+		$format_and_salt = $hash_format . $salt;
+		$hash = crypt($password, $format_and_salt);
+		return $hash;
+	}
 
-    /**
-     * Проверяет имя: не меньше, чем 6 символов
-     * @param string $password <p>Пароль</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function checkPassword($password)
-    {
-        if (strlen($password) >= 6) {
-            return true;
-        }
-        return false;
-    }
+	// генератор соли
+	public static function generateSalt($length) {
+		// Not 100% unique, not 100% random, but good enough for a salt
+		// MD5 returns 32 characters
+		$unique_random_string = md5(uniqid(mt_rand(), true));
 
-    /**
-     * Проверяет email
-     * @param string $email <p>E-mail</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function checkEmail($email)
-    {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return true;
-        }
-        return false;
-    }
+		// Valid characters for a salt are [a-zA-Z0-9./]
+		$base64_string = base64_encode($unique_random_string);
 
-    /**
-     * Проверяет не занят ли email другим пользователем
-     * @param type $email <p>E-mail</p>
-     * @return boolean <p>Результат выполнения метода</p>
-     */
-    public static function checkEmailExists($email)
-    {
-        // Соединение с БД        
-        $db = Db::getConnection();
+		// But not '+' which is valid in base64 encoding
+		$modified_base64_string = str_replace('+', '.', $base64_string);
 
-        // Текст запроса к БД
-        $sql = 'SELECT COUNT(*) FROM user WHERE email = :email';
+		// Truncate string to the correct length
+		$salt = substr($modified_base64_string, 0, $length);
 
-        // Получение результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':email', $email, PDO::PARAM_STR);
-        $result->execute();
+		return $salt;
+	}
 
-        if ($result->fetchColumn())
-            return true;
-        return false;
-    }
+    // проверка зашифрованного пароля
+	public static function passwordCheck($password, $existing_hash) {
+		// existing hash contains format and salt at start
+		$hash = crypt($password, $existing_hash);
+		if ($hash == $existing_hash) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    /**
-     * Возвращает пользователя с указанным id
-     * @param integer $id <p>id пользователя</p>
-     * @return array <p>Массив с информацией о пользователе</p>
-     */
-    public static function getUserById($id)
-    {
-        // Соединение с БД
-        $db = Db::getConnection();
-
-        // Текст запроса к БД
-        $sql = 'SELECT * FROM user WHERE id = :id';
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-
-        // Указываем, что хотим получить данные в виде массива
-        $result->setFetchMode(PDO::FETCH_ASSOC);
-        $result->execute();
-
-        return $result->fetch();
-    }
 
 }

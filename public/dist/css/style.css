@@ -2,3 +2,11 @@
     width: 50px;
     margin-right: 10px;
 }
+.cover{
+    background-size: cover;
+}
+
+.writer__years{
+    font-size: 14px;
+}
+

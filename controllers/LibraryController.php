@@ -1,66 +1,66 @@
 <?php
+require_once ROOT.'/models/User.php';
+require_once ROOT.'/models/Library.php';
 
-require_once ROOT.'/models/Writer.php';
-
-class WriterController
+class libraryController
 {
     // INDEX ALL
     public function actionIndex()
     {
-        $writers = Writer::getAll();  
-        require_once(ROOT . '/views/site/writers.php');
+        $libraries = Library::getAll();  
+        require_once(ROOT . '/views/libraries/libraries.php');
         return true;
     }
     // READ ONE 
     public function actionView($id)
     {
-        $writer = Writer::getById($id);   
-        require_once(ROOT . '/views/site/writer.php');
+        $library = Library::getById($id);   
+        require_once(ROOT . '/views/libraries/library.php');
         return true;
     }
-    // FORM FOR ADD WRITER
+    // FORM FOR ADD library
     public function actionAdd()
     {  
-        require_once(ROOT . '/views/admin/writer_add.php');
+        require_once(ROOT . '/views/libraries/library_add.php');
         return true;
     }
-    // STORE WRITER
+    // STORE library
     public function actionStore()
     {
-        if(Writer::store(Upload::upload('writers'))){
-            redirect("writers");
+        if(Library::store(Upload::upload('libraries'))){
+            redirect("libraries");
         }
         else{
-            redirect("writers/add");
+            redirect("libraries/add");
         }
     }
-    // EDIT WRITER
+    // EDIT library
     public function actionEdit($id)
     { 
-        $writer = Writer::getById($id);
-        require_once(ROOT . '/views/admin/writer_edit.php');
+        $library = Library::getById($id);
+        require_once(ROOT . '/views/libraries/library_edit.php');
         return true;
     }
 
     public function actionUpdate($id)
     {
-        $writer = Writer::getById($id);
-        $photo = $writer['photo'];
+        $library = Library::getById($id);
+        $photo = $library['photo'];
         
-        if(Writer::update($id)){
-            redirect("writers");            
+        if(Library::update($id)){
+            redirect("libraries");            
         }
         else{
-            redirect("writers/edit/{$id}");
+            redirect("libraries/edit/{$id}");
         }
     }
 
     public function actionDestroy($id)
     {
-        $writer = Writer::getById($id);
-        Writer::deleteByid($id);
-        unlink(ROOT . '/public/uploads/img/writers/'.$writer['photo']);
-        redirect("writers");
+        $library = Library::getById($id);
+        Library::deleteByid($id);
+        unlink(ROOT . '/public/uploads/img/libraries/'.$library['photo']);
+        redirect("libraries");
     }
 
 }

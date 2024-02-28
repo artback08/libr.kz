@@ -3,7 +3,7 @@
 return array(
     // AUTH
     'login' => 'user/login',
-    'admin' => 'auth/index',
+    'logout' => 'user/logout',
     
     // WRITERS
     'writers/add' => 'writer/add',
