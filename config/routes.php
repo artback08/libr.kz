@@ -24,7 +24,7 @@ return array(
     'libraries' => 'library/index',
 
     // MUSEUMS
-    'museums' => 'site/museums',
+    'museums' => 'museum/index',
     // Главная страница
     'index' => 'site/index', // actionIndex в SiteController
     '' => 'site', // actionIndex в SiteController
