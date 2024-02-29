@@ -3,10 +3,14 @@
     margin-right: 10px;
 }
 .cover{
-    background-size: cover;
+    object-fit: cover;
 }
 
 .writer__years{
     font-size: 14px;
+}
+
+.carousel__img{
+    object-fit: cover;
 }
 

@@ -150,8 +150,11 @@
     
 <main class="form-signin w-100 m-auto">
   <form action="<?php echo URL; ?>/login/" method="POST">
-    <a href="<?php echo URL; ?>"><img class="mb-4" src="<?php echo URL; ?>/img/logo2.png" alt="" width="72" height="57" class="text-center"></a>
-    <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
+    <div class="text-centered">
+      <a href="<?php echo URL; ?>"><img class="mb-4 mx-2" src="<?php echo URL; ?>/img/logo2.png" width="72" height="57"> libr.kz</a>
+    </div>
+    
+    <!-- <h1 class="h3 mb-3 fw-normal">Авторизация</h1> -->
 
     <div class="form-floating">
       <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">

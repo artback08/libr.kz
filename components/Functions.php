@@ -18,3 +18,22 @@ function years($string){
     echo $start . '-' . $end;
 
 }
+
+function activelink($link){
+    if (!empty($_SERVER['REQUEST_URI'])) 
+    {
+        if($_SERVER['REQUEST_URI'] == '/' && $link == 'index')
+        {
+            echo 'text-secondary ';
+        }
+        if(strripos($_SERVER['REQUEST_URI'], $link)){
+            echo 'text-secondary';
+        }
+        else{
+            echo 'text-primary ';
+        }  
+    }
+    else{
+        echo 'text-secondary ';
+    }
+}
