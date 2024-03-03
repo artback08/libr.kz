@@ -2,7 +2,7 @@
 require_once ROOT.'/components/Db.php';
 require_once ROOT.'/components/Upload.php';
 
-class Library
+class Museum
 {
 
     // READ ALL
@@ -12,30 +12,30 @@ class Library
         $db = Db::getConnection();
 
         // Запрос к БД
-        $result = $db->query('SELECT * FROM libraries ORDER BY id');
+        $result = $db->query('SELECT * FROM museums ORDER BY id');
 
         // Получение и возврат результатов
         $i = 0;
-        $librariesList = array();
+        $museumsList = array();
         while ($row = $result->fetch()) {
-            $librariesList[$i]['id'] = $row['id'];
-            $librariesList[$i]['name'] = $row['name'];
-            $librariesList[$i]['address'] = $row['address'];
-            $librariesList[$i]['link'] = $row['link'];
-            $librariesList[$i]['history'] = $row['history'];
-            $librariesList[$i]['site'] = $row['site'];
-            $librariesList[$i]['photo'] = $row['photo'];
-            $librariesList[$i]['telephone'] = $row['telephone'];
+            $museumsList[$i]['id'] = $row['id'];
+            $museumsList[$i]['name'] = $row['name'];
+            $museumsList[$i]['address'] = $row['address'];
+            $museumsList[$i]['link'] = $row['link'];
+            $museumsList[$i]['history'] = $row['history'];
+            $museumsList[$i]['email'] = $row['email'];
+            $museumsList[$i]['photo'] = $row['photo'];
+            $museumsList[$i]['telephone'] = $row['telephone'];
             $i++;
         }
-        return $librariesList;
+        return $museumsList;
     }
 
     // READ ONE
     public static function getById($id)
     {
         $db = Db::getConnection();
-        $result = $db->prepare("SELECT * FROM libraries WHERE id = :id LIMIT 1");   
+        $result = $db->prepare("SELECT * FROM museums WHERE id = :id LIMIT 1");   
         $result->bindValue(':id', $id, \PDO::PARAM_INT);
         $result->setFetchMode(\PDO::FETCH_ASSOC);
         $result->execute();
@@ -49,7 +49,7 @@ class Library
         $address = '';
         $link = '';
         $telephone = '';
-        $site = '';
+        $email = '';
         $photo = '';
         $history = '';
         $is_published = '';
@@ -58,26 +58,26 @@ class Library
         $address = $_POST['address'];
         $link = $_POST['link'];
         $telephone = $_POST['telephone'];
-        $site = $_POST['site'];
+        $email = $_POST['email'];
         $history = $_POST['history'];
         $is_published = $_POST['is_published'];
 
         //если существует изображение
-        $photo = $file !== null ? $file : "library.jpg";
+        $photo = $file !== null ? $file : "museum.jpg";
         
        
         $db = Db::getConnection();
-        $sql = 'INSERT INTO libraries '
-                . '(name, address, link, telephone, site, history, photo, is_published)'
+        $sql = 'INSERT INTO museums '
+                . '(name, address, link, telephone, email, history, photo, is_published)'
                 . 'VALUES '
-                . '(:name, :address, :link, :telephone, :site, :history, :photo, :is_published)';
+                . '(:name, :address, :link, :telephone, :email, :history, :photo, :is_published)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
         $result->bindParam(':address', $_POST['address'], PDO::PARAM_STR);
         $result->bindParam(':link', $_POST['link'], PDO::PARAM_STR);
         $result->bindParam(':telephone', $_POST['telephone'], PDO::PARAM_INT);
-        $result->bindParam(':site', $_POST['site'], PDO::PARAM_STR);
+        $result->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
         $result->bindParam(':history', $_POST['history'], PDO::PARAM_STR);
         $result->bindParam(':photo', $photo, PDO::PARAM_STR);
         $result->bindParam(':is_published', $_POST['is_published'], PDO::PARAM_INT);
@@ -96,41 +96,41 @@ class Library
         $address = '';
         $link = '';
         $telephone = '';
-        $site = '';
+        $email = '';
         $photo = '';
         $history = '';
         $is_published = '';
 
-        if($library = Library::getById($id))
+        if($museum = Museum::getById($id))
         {
             // текущее изображение
-            $photo = $library['photo'];
+            $photo = $museum['photo'];
         }
         
         $name = $_POST['name'];
         $address = $_POST['address'];
         $link = $_POST['link'];
         $telephone = $_POST['telephone'];
-        $site = $_POST['site'];
+        $email = $_POST['email'];
         $history = $_POST['history'];
         $is_published = $_POST['is_published'];
 
         // if(isset($_POST['update'])){
 
             
-            if($newPhoto = Upload::upload('libraries')){                
-                Upload::delete('libraries', $photo);
+            if($newPhoto = Upload::upload('museums')){                
+                Upload::delete('museums', $photo);
                 // название нового сохраненного изображения
                 $photo = $newPhoto;
             };
             
             $db = Db::getConnection();
-            $sql = 'UPDATE libraries SET
+            $sql = 'UPDATE museums SET
                     name = :name,
                     address = :address,
                     link = :link,
                     telephone = :telephone,
-                    site = :site,
+                    email = :email,
                     history = :history,
                     photo = :photo,
                     is_published = :is_published
@@ -141,7 +141,7 @@ class Library
             $result->bindParam(':address', $address, PDO::PARAM_STR);
             $result->bindParam(':link', $link, PDO::PARAM_STR);
             $result->bindParam(':telephone', $telephone, PDO::PARAM_INT);
-            $result->bindParam(':site', $site, PDO::PARAM_STR);
+            $result->bindParam(':email', $email, PDO::PARAM_STR);
             $result->bindParam(':photo', $photo, PDO::PARAM_STR);
             $result->bindParam(':history', $history, PDO::PARAM_STR);
             $result->bindParam(':is_published', $is_published, PDO::PARAM_INT);
@@ -159,7 +159,7 @@ class Library
     public static function deleteByid($id)
     {
         $db = Db::getConnection();
-        $sql = 'DELETE FROM libraries WHERE id = :id';
+        $sql = 'DELETE FROM museums WHERE id = :id';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);

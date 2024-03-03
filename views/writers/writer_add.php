@@ -2,8 +2,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-            <li class="breadcrumb-item"><a href="/">Library</a></li>
-            <li class="breadcrumb-item"><a href="http://<?php echo SITE; ?>/writers">Писатели</a></li>
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="http://<?php echo SITE; ?>/writers">Авторы</a></li>
             <li class="breadcrumb-item active" aria-current="page">Добавить</li>
         </ol>
     </nav>

@@ -1,49 +1,52 @@
 <?php include ROOT . '/views/layouts/header.php'; ?>
-  <div class="container">
+  
+<div class="container">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-      <li class="breadcrumb-item"><a href="/">Library</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Музеи</li>
+      <li class="breadcrumb-item"><a href="<?php echo URL ?>">Главная</a></li>
+      <li class="breadcrumb-item"><a href="<?php echo URL ?>/museums">Памятные места</a></li>
+      
+      <?php if(User::loggedIn()){ ?> 
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="<?php echo URL ?>/museums/add">
+          <span class="badge text-bg-warning rounded-pill">Добавить</span>
+        </a>
+      </li>
+      <?php } ?>
+
     </ol>
   </nav>
-
-  <h6>Музеи</h6>
+  <div class="row">
+    <h6>Памятные места</h6>
+    
     <div class="row mb-2 mt-5">
+      
+    <?php foreach ($museums as $museum): ?>
+      
       <div class="col-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary-emphasis">Писатель дня</strong>
-            <h3 class="mb-0">Featured post</h3>
-            <div class="mb-1 text-body-secondary">Nov 12</div>
-            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-              Continue reading
-              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+            <a href="<?php echo $museum['link'] ?>"></a><strong class="d-inline-block mb-2 text-primary-emphasis">Показать на карте</strong></a>
+            <h3 class="mb-0"><?php echo $museum['name'] ?></h3>
+            
+            <?php if($museum['telephone'] != 0){ ?>
+            <div class="mb-1 text-body-secondary"><?php echo $museum['telephone'] ?></div>
+            <?php } ?>
+            
+            <?php if($museum['email'] != ''){ ?>
+            <p class="card-text mb-auto"><?php echo $museum['email'] ?></p>
+            <?php } ?>
+            
+            <a href="<?php echo URL ?>/museums/<?php echo $museum['id'] ?>" class="icon-link gap-1 icon-link-hover stretched-link">
+              Подробнее
             </a>
           </div>
           <div class="col-auto d-none d-lg-block">
-            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          </div>
+            <img class="bg-placeholder-img" width="200" height="250" src="<?php echo URL ?>/uploads/img/museums/<?php echo $museum['photo'] ?>" alt="">
+            </div>
         </div>
       </div>
-  
-      <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary-emphasis">Музей дня</strong>
-            <h3 class="mb-0">Featured post</h3>
-            <div class="mb-1 text-body-secondary">Nov 12</div>
-            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-              Continue reading
-              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-            </a>
-          </div>
-          <div class="col-auto d-none d-lg-block">
-            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          </div>
-        </div>
-      </div>
+      <?php endforeach; ?>
 
     </div>
     

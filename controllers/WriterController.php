@@ -12,7 +12,7 @@ class WriterController
         require_once(ROOT . '/views/writers/writers.php');
         return true;
     }
-    // READ ONE 
+    // ONE 
     public function actionView($id)
     {
         $writer = Writer::getById($id);   
@@ -22,22 +22,33 @@ class WriterController
     // FORM FOR ADD WRITER
     public function actionAdd()
     {  
+        User::confirmLoggedIn();
+
         require_once(ROOT . '/views/writers/writer_add.php');
         return true;
     }
     // STORE WRITER
     public function actionStore()
     {
+        User::confirmLoggedIn();
+
         if(Writer::store(Upload::upload('writers'))){
+            
+            $_SESSION['message'] = 'Автор добавлен';
             redirect("writers");
+
         }
         else{
+            
+            $_SESSION['message'] = 'Автор не добавлен';
             redirect("writers/add");
         }
     }
     // EDIT WRITER
     public function actionEdit($id)
     { 
+        User::confirmLoggedIn();
+
         $writer = Writer::getById($id);
         require_once(ROOT . '/views/writers/writer_edit.php');
         return true;
@@ -45,22 +56,26 @@ class WriterController
 
     public function actionUpdate($id)
     {
+        User::confirmLoggedIn();
+
         $writer = Writer::getById($id);
         $photo = $writer['photo'];
         
-        if(Writer::update($id)){
-            redirect("writers");            
-        }
-        else{
-            redirect("writers/edit/{$id}");
-        }
+        Writer::update($id);
+        
+        $_SESSION['message'] = 'Информация о Авторе обновлена';
+        redirect("writers");            
+        
     }
 
     public function actionDestroy($id)
     {
+        User::confirmLoggedIn();
+
         $writer = Writer::getById($id);
         Writer::deleteByid($id);
         unlink(ROOT . '/public/uploads/img/writers/'.$writer['photo']);
+        $_SESSION['message'] = 'Запись удалена';
         redirect("writers");
     }
 

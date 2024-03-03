@@ -50,10 +50,11 @@ class UserController
         unset($_SESSION["user_id"]);
         unset($_SESSION["email"]);
         unset($_SESSION["name"]);
-        unset($_SESSION["message"]);
+        
+        $_SESSION['message'] = 'Авторизованная сессия удалена';
         
         // Перенаправляем пользователя на главную страницу
-        redirect('login');
+        redirect('');
     }
 
 }

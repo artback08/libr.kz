@@ -10,4 +10,10 @@ class SiteController
         return true;
     }
 
+    public function actionTest()
+    {
+        require_once(ROOT . '/views/tests.php');
+        return true;
+    }
+
 }

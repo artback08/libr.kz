@@ -1,12 +1,19 @@
 <?php require_once ROOT . '/views/layouts/header.php'; ?>
-<!-- <?php require_once ROOT . '/views/layouts/sidebar.php'; ?> -->
 
-    <div class="container">
+  <div class="container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-        <li class="breadcrumb-item"><a href="<?php echo URL ?>">Library</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo URL ?>">Главная</a></li>
         <li class="breadcrumb-item"><a href="<?php echo URL ?>/libraries">Библиотеки</a></li>
-        <?php if(User::loggedIn()){ ?><li class="breadcrumb-item active" aria-current="page"><a href="<?php echo URL ?>/libraries/add"><span class="badge text-bg-warning rounded-pill">Добавить</span></a></li><?php } ?>
+        
+        <?php if(User::loggedIn()){ ?>
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="<?php echo URL ?>/libraries/add">
+            <span class="badge text-bg-warning rounded-pill">Добавить</span>
+          </a>
+        </li>
+        <?php } ?>
+
       </ol>
     </nav>
     <div class="row">
@@ -18,7 +25,7 @@
           <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
               
-              <h4 class="mb-0"><?php echo $library['name'] ?></h4>
+              <a href="<?php echo URL ?>/libraries/<?php echo $library['id'] ?>"><h4 class="mb-0"><?php echo $library['name'] ?></h4></a>
               <strong class="d-inline-block mb-2 text-primary-emphasis"><?php echo $library['address'] ?></strong>
               <div class="mb-1 text-body-secondary">+ 7 <?php echo $library['telephone'] ?></div>
               <p class="card-text mb-auto"><?php echo $library['site'] ?></p>

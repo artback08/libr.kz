@@ -20,23 +20,27 @@ class libraryController
     }
     // FORM FOR ADD library
     public function actionAdd()
-    {  
+    {   
+        User::confirmLoggedIn();
+
         require_once(ROOT . '/views/libraries/library_add.php');
         return true;
     }
     // STORE library
     public function actionStore()
     {
-        if(Library::store(Upload::upload('libraries'))){
-            redirect("libraries");
-        }
-        else{
-            redirect("libraries/add");
-        }
+        User::confirmLoggedIn();
+
+        Library::store(Upload::upload('libraries'));
+        $_SESSION['message'] = 'Библиотека добавлена';
+        redirect("libraries");
+        
     }
     // EDIT library
     public function actionEdit($id)
     { 
+        User::confirmLoggedIn();
+
         $library = Library::getById($id);
         require_once(ROOT . '/views/libraries/library_edit.php');
         return true;
@@ -44,22 +48,32 @@ class libraryController
 
     public function actionUpdate($id)
     {
+        User::confirmLoggedIn();
+
         $library = Library::getById($id);
-        $photo = $library['photo'];
         
+        // $photo = $library['photo'];
+        
+
         if(Library::update($id)){
-            redirect("libraries");            
+            redirect("libraries");
+            $_SESSION['message'] = 'Информация обновлена';  
         }
         else{
+            $_SESSION['message'] = 'Информация не обновлена';
             redirect("libraries/edit/{$id}");
         }
     }
 
     public function actionDestroy($id)
     {
+        User::confirmLoggedIn();
+
         $library = Library::getById($id);
         Library::deleteByid($id);
         unlink(ROOT . '/public/uploads/img/libraries/'.$library['photo']);
+
+        $_SESSION['message'] = 'Запись удалена';
         redirect("libraries");
     }
 

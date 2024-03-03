@@ -44,8 +44,8 @@ class User
     
     // перенаправление с закрытой страницы
     public static function confirmLoggedIn() {
-        if(!loggedIn()) {
-            redirect("login.php");
+        if(!User::loggedIn()) {
+            redirect("login");
         }
     }
 

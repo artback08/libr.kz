@@ -2,8 +2,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
-            <li class="breadcrumb-item"><a href="/">Library</a></li>
-            <li class="breadcrumb-item"><a href="http://<?php echo SITE; ?>/writers">Писатели</a></li>
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="http://<?php echo SITE; ?>/writers">Авторы</a></li>
             <li class="breadcrumb-item active" aria-current="page">Редактировать</li>
         </ol>
     </nav>
@@ -15,7 +15,7 @@
             <div class="row g-3">
                 <div class="col-sm-9">
                     <label for="name" class="form-label">Писатель</label>
-                    <input name="name" type="text" class="form-control" id="name" placeholder="" value="<?php echo $writer['name']; ?>" required="">
+                    <input name="name" type="text" class="form-control" id="name" placeholder="" value="<?php echo htmlspecialchars($writer['name']); ?>" required="">
                     <div class="invalid-feedback">Это поле необходимо заполнить</div>
                 </div>
                 <div class="col-sm-3">
@@ -25,12 +25,13 @@
                 </div>
                 <label for="biography">Биография</label>
                 <div class="form-floating">
-                    <textarea name="biography" style="height: 500px" class="form-control" placeholder="..." id="biography"><?php echo $writer['biography']; ?></textarea>
+                    <textarea name="biography" style="height: 500px" class="form-control" placeholder="..." id="biography"><?php echo ($writer['biography']); ?></textarea>
                 </div>
+                
                 <img style="width: 150px;" src="<?php echo URL; ?>/uploads/img/writers/<?php echo $writer['photo']; ?>" alt="">
+                
                 <div class="mb-3">
-                    
-                    <label for="formFile" class="form-label">Заменить фотографию</label>
+                <label for="formFile" class="form-label">Заменить фотографию</label>
                     <input class="form-control" type="file" id="formFile"  name="photo">
                 </div>
             </div>

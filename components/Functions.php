@@ -37,3 +37,15 @@ function activelink($link){
         echo 'text-secondary ';
     }
 }
+
+function flash()
+{
+    $type = 'success';
+    // $_SESSION['message'] = $message;
+    if(isset($_SESSION['message'])){
+        echo '<div class=""><script> toastr.' . $type . '(\'' . $_SESSION['message'] . '\')</script></div>';
+        unset($_SESSION['message']);
+    }
+}
+
+

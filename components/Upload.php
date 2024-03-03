@@ -43,8 +43,11 @@
         public static function delete($dir, $fileName)
         {
             if(isset ($_POST['update'])){
-                if(Upload::upload($dir)){
-                    unlink(ROOT . '/public/uploads/img/' . $dir . '/' . $fileName);
+                if($fileName !== 'writer.jpg' && $fileName !== 'library.jpg' && $fileName !== 'museum.jpg'){
+
+                    if(Upload::upload($dir)){
+                        unlink(ROOT . '/public/uploads/img/' . $dir . '/' . $fileName);
+                    }
                 }
             }
         }
