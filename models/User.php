@@ -56,6 +56,7 @@ class User
 		$salt = User::generateSalt($salt_length);
 		$format_and_salt = $hash_format . $salt;
 		$hash = crypt($password, $format_and_salt);
+    
 		return $hash;
 	}
 
